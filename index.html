@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>XD-FUN: GAMER+ ENGINE</title>
+    <script type="text/javascript" src="https://cloudflare.com"></script>
+    <script type="text/javascript" src="https://cloudflare.com"></script>
+    <style>
+        body { background-color: #121212; color: #00ff00; font-family: monospace; padding: 20px; font-size: 16px; }
+        #game-output { white-space: pre-wrap; line-height: 1.5; }
+        input { background: #222; color: #00ff00; border: 1px solid #00ff00; font-family: monospace; font-size: 16px; padding: 5px; width: 80%; }
+    </style>
+</head>
+<body onload="brython()">
+    <h2>🕹️ GAMER+ ENGINE v1.0</h2>
+    <div id="game-output"></div>
+    <br>
+    <input id="game-input" type="text" placeholder="Type here and press Enter..." autofocus />
+
+    <script type="text/python">
+        from browser import document, window, ajax
+
+        def on_complete(req):
+            exec(req.text, {'input': web_input, 'print': web_print})
+
+        def web_print(*args):
+            text = " ".join(str(x) for x in args)
+            document['game-output'].text += text + "\n"
+
+        def web_input(prompt_text=""):
+            web_print(prompt_text)
+            return window.prompt(prompt_text) or ""
+
+        ajax.get("Main.py", oncomplete=on_complete)
+    </script>
+</body>
+</html>
